@@ -10,6 +10,7 @@
       padding: 0;
       overflow: hidden; /* Evita barras de rolagem */
       height: 100%;
+      background-color: #000;
     }
     .iframe-container {
       width: 100%;
