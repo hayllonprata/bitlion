@@ -15,12 +15,12 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 // Substituir URLs relativas por absolutas
-$response = preg_replace('/(href|src|action|data-src|content)=["\']\/([^"\']+)["\']/i', '$1="'.$base_url.'/$2"', $response);
-$response = preg_replace('/url\(["\']?\/([^"\')]+)["\']?\)/i', 'url("'.$base_url.'/$1")', $response);
-$response = preg_replace('/(fetch|WebSocket|XHR)\(["\']\/([^"\')]+)["\']\)/i', '$1("'.$base_url.'/$2")', $response);
+$response = preg_replace('#(href|src|action|data-src|content)=["\']/([^"\']+)["\']#i', '$1="'.$base_url.'/$2"', $response);
+$response = preg_replace('#url\(["\']?/([^"\')]+)["\']?\)#i', 'url("'.$base_url.'/$1")', $response);
+$response = preg_replace('#(fetch|WebSocket|XHR)\(["\']/([^"\')]+)["\']\)#i', '$1("'.$base_url.'/$2")', $response);
 
 // Modificar links internos para passarem pelo proxy
-$response = preg_replace('/href=["\']'.$base_url.'\/([^"\']+)["\']/i', 'href="proxy.php?url=$1"', $response);
+$response = preg_replace('#href=["\']'.$base_url.'/([^"\']+)["\']#i', 'href="proxy.php?url=$1"', $response);
 
 echo $response;
 ?>
