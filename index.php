@@ -4,14 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iframe Responsivo</title>
-  
-  <!-- Estilos CSS extraídos -->
-  <link rel="stylesheet" href="https://www.bitcat.com/home/static/common-5c0ef867e.css">
-  <link rel="stylesheet" href="https://www.bitcat.com/home/static/quill-34404ce82c.core.css">
-  <link rel="stylesheet" href="https://www.bitcat.com/home/static/quill-a36db7ccf.snow.css">
-  <link rel="stylesheet" href="https://www.bitcat.com/home/static/quill-e5de0101ba.bubble.css">
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-
   <style>
     body, html {
       margin: 0;
