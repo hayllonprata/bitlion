@@ -1,8 +1,8 @@
 <?php
 // Captura a URL da requisição (se nenhuma for fornecida, usa a página inicial)
 $path = isset($_GET['url']) ? $_GET['url'] : '';
-$base_url = "https://www.bitcat.com";
-$target_url = $base_url . ltrim($path, '/');
+$base_url = "https://www.bitcat.com/";
+$target_url = $base_url . ltrim($path, '');
 
 $ch = curl_init($target_url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
