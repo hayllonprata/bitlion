@@ -11,7 +11,7 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 // Substituir URLs relativas por absolutas
-$base_url = "https://www.bitcat.com";
+$base_url = "";
 $response = str_replace('href="/', 'href="' . $base_url . '/', $response);
 $response = str_replace('src="/', 'src="' . $base_url . '/', $response);
 $response = str_replace('url(/', 'url(' . $base_url . '/', $response);
