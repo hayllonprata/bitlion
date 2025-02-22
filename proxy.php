@@ -10,11 +10,13 @@ curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) A
 $response = curl_exec($ch);
 curl_close($ch);
 
-// Substituir URLs relativas por absolutas
+// Base URL
 $base_url = "https://www.bitcat.com";
-$response = str_replace('href="/', 'href="' . $base_url . '/', $response);
-$response = str_replace('src="/', 'src="' . $base_url . '/', $response);
-$response = str_replace('url(/', 'url(' . $base_url . '/', $response);
+
+// Substituir URLs relativas por absolutas
+$response = preg_replace('/(href|src|action)=["\']\/([^"\']+)["\']/', '$1="'.$base_url.'/$2"', $response);
+$response = preg_replace('/url\(["\']?\/([^"\')]+)["\']?\)/', 'url("'.$base_url.'/$1")', $response);
+$response = preg_replace('/(fetch|WebSocket)\(["\']\/([^"\')]+)["\']/', '$1("'.$base_url.'/$2")', $response);
 
 echo $response;
 ?>
