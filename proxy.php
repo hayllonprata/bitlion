@@ -1,5 +1,5 @@
 <?php
-$base_url = "https://www.bitcat.com";
+$base_url = "https://m.bitcat.com";
 $url = $base_url . $_SERVER['REQUEST_URI'];
 
 $ch = curl_init();
