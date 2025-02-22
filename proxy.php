@@ -15,8 +15,8 @@ if (strpos($response, '<meta name="viewport"') === false) {
     $response = str_replace('<head>', '<head><meta name="viewport" content="width=device-width, initial-scale=1.0">', $response);
 }
 
-// Substitui URLs relativas por absolutas
-$response = preg_replace('/(href|src)="\/([^"]+)"/', '$1="https://www.bitcat.com/$2"', $response);
+// Dentro do proxy.php, após carregar o HTML
+$response = preg_replace('/(href|src)="https?:\/\/[^"]+"/', '$1="https://gerenciamento-bitlion-cat.7uwzf6.easypanel.host/proxy.php?url=$0"', $response);
 
 echo $response;
 ?>
