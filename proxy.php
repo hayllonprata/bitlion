@@ -13,10 +13,15 @@ curl_close($ch);
 // Base URL
 $base_url = "https://www.bitcat.com";
 
-// Substituir URLs relativas por absolutas
+// Corrigir URLs relativas comuns
 $response = preg_replace('/(href|src|action)=["\']\/([^"\']+)["\']/', '$1="'.$base_url.'/$2"', $response);
 $response = preg_replace('/url\(["\']?\/([^"\')]+)["\']?\)/', 'url("'.$base_url.'/$1")', $response);
-$response = preg_replace('/(fetch|WebSocket)\(["\']\/([^"\')]+)["\']/', '$1("'.$base_url.'/$2")', $response);
+
+// Corrigir chamadas de scripts dinâmicos e WebSockets
+$response = preg_replace('/(fetch|WebSocket|src|href)\(["\']\/([^"\')]+)["\']/', '$1("'.$base_url.'/$2")', $response);
+
+// Adicionar base URL em links de scripts ainda não corrigidos
+$response = preg_replace('/<script\s+src=["\']\/([^"\']+)["\']/', '<script src="'.$base_url.'/$1"', $response);
 
 echo $response;
 ?>
