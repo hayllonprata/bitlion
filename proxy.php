@@ -15,7 +15,7 @@ $base_url = "https://www.bitcat.com";
 $response = str_replace('href="/', 'href="' . $base_url . '/', $response);
 $response = str_replace('src="/', 'src="' . $base_url . '/', $response);
 $response = str_replace('url(/', 'url(' . $base_url . '/', $response);
-$response = str_replace('"/home/', '"' . $base_url . '/home/', $response);
+$response = str_replace('href="', 'href="' . $base_url . '/', $response);
 
 echo $response;
 ?>
