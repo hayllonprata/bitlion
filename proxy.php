@@ -1,5 +1,5 @@
 <?php
-$base_url = "https://m.bitcat.com/en_US/";
+$base_url = "https://www.bitcat.com/";
 $url = $base_url . $_SERVER['REQUEST_URI'];
 
 $ch = curl_init();
@@ -15,9 +15,9 @@ if(curl_errno($ch)) {
     echo 'Curl error: ' . curl_error($ch);
 } else {
     // Substituir URLs relativas por absolutas
-    $response = str_replace('href="/', 'href="' . $base_url . '/', $response);
-    $response = str_replace('src="/', 'src="' . $base_url . '/', $response);
-    $response = str_replace('url(/', 'url(' . $base_url . '/', $response);
+    $response = str_replace('href="/', 'href="' . $base_url . '', $response);
+    $response = str_replace('src="/', 'src="' . $base_url . '', $response);
+    $response = str_replace('url(/', 'url(' . $base_url . '', $response);
 }
 
 curl_close($ch);
