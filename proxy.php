@@ -15,11 +15,17 @@ $base_url = "https://www.bitcat.com";
 
 // Substituir todas as ocorrências de URLs relativas
 $patterns = [
+    // Corrige href, src, action, data-src
     '/(href|src|action|data-src)=["\']\/([^"\']+)["\']/i' => '$1="'.$base_url.'/$2"',
+    
+    // Corrige url() dentro de CSS
     '/url\(["\']?\/([^"\')]+)["\']?\)/i' => 'url("'.$base_url.'/$1")',
+
+    // Corrige fetch("/...") e WebSocket("/...")
     '/(fetch|WebSocket)\(["\']\/([^"\')]+)["\']\)/i' => '$1("'.$base_url.'/$2")'
 ];
 
+// Aplicar todas as substituições no conteúdo da página
 foreach ($patterns as $pattern => $replacement) {
     $response = preg_replace($pattern, $replacement, $response);
 }
