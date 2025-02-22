@@ -1,5 +1,7 @@
 <?php
-$url = "https://www.bitcat.com/";
+$base_url = "https://www.bitcat.com";
+$url = $base_url . $_SERVER['REQUEST_URI'];
+
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -12,17 +14,10 @@ $response = curl_exec($ch);
 if(curl_errno($ch)) {
     echo 'Curl error: ' . curl_error($ch);
 } else {
-    // Inserir os estilos CSS no <head> do HTML
-    $styles = '
-    <link rel="stylesheet" href="https://www.bitcat.com/home/static/common-5c0ef867e.css">
-    <link rel="stylesheet" href="https://www.bitcat.com/home/static/quill-34404ce82c.core.css">
-    <link rel="stylesheet" href="https://www.bitcat.com/home/static/quill-a36db7ccf.snow.css">
-    <link rel="stylesheet" href="https://www.bitcat.com/home/static/quill-e5de0101ba.bubble.css">
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    ';
-
-    // Inserir os estilos no <head> do HTML
-    $response = str_replace('</head>', $styles . '</head>', $response);
+    // Substituir URLs relativas por absolutas
+    $response = str_replace('href="/', 'href="' . $base_url . '/', $response);
+    $response = str_replace('src="/', 'src="' . $base_url . '/', $response);
+    $response = str_replace('url(/', 'url(' . $base_url . '/', $response);
 }
 
 curl_close($ch);
