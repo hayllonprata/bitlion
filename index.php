@@ -27,7 +27,7 @@
 </head>
 <body>
   <div class="iframe-container">
-    <iframe src="https://gerenciamento-bitlion-cat.7uwzf6.easypanel.host/proxy.php" allow="fullscreen"></iframe>
+    <iframe src="https://gerenciamento-bitlion-cat.7uwzf6.easypanel.host/proxy.php" height="100%" allow="fullscreen"></iframe>
   </div>
 </body>
 </html>
