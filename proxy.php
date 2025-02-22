@@ -13,15 +13,16 @@ curl_close($ch);
 // Base URL
 $base_url = "https://www.bitcat.com";
 
-// Corrigir URLs relativas comuns
-$response = preg_replace('/(href|src|action)=["\']\/([^"\']+)["\']/', '$1="'.$base_url.'/$2"', $response);
-$response = preg_replace('/url\(["\']?\/([^"\')]+)["\']?\)/', 'url("'.$base_url.'/$1")', $response);
+// Substituir todas as ocorrências de URLs relativas
+$patterns = [
+    '/(href|src|action|data-src)=["\']\/([^"\']+)["\']/i' => '$1="'.$base_url.'/$2"',
+    '/url\(["\']?\/([^"\')]+)["\']?\)/i' => 'url("'.$base_url.'/$1")',
+    '/(fetch|WebSocket)\(["\']\/([^"\')]+)["\']\)/i' => '$1("'.$base_url.'/$2")'
+];
 
-// Corrigir chamadas de scripts dinâmicos e WebSockets
-$response = preg_replace('/(fetch|WebSocket|src|href)\(["\']\/([^"\')]+)["\']/', '$1("'.$base_url.'/$2")', $response);
-
-// Adicionar base URL em links de scripts ainda não corrigidos
-$response = preg_replace('/<script\s+src=["\']\/([^"\']+)["\']/', '<script src="'.$base_url.'/$1"', $response);
+foreach ($patterns as $pattern => $replacement) {
+    $response = preg_replace($pattern, $replacement, $response);
+}
 
 echo $response;
 ?>
