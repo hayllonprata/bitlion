@@ -6,6 +6,7 @@ $target_url = rtrim($base_url, '/') . '/' . ltrim($path, '/');
 
 // Inicializa cURL
 $ch = curl_init($target_url);
+curl_setopt($ch, CURLOPT_URL, $base_url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
