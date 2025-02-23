@@ -9,20 +9,18 @@ export function Futures() {
   const [selectedTimeframe, setSelectedTimeframe] = useState('30min');
   const [selectedChartTab, setSelectedChartTab] = useState('K Line');
 
-  // Sample data for the chart with both up and down movements
   const [chartData] = useState([
     { time: '2024-03-22', open: 95300, high: 96000, low: 95200, close: 95800 },
-    { time: '2024-03-23', open: 95800, high: 96200, low: 95600, close: 95700 }, // Down candle
+    { time: '2024-03-23', open: 95800, high: 96200, low: 95600, close: 95700 },
     { time: '2024-03-24', open: 95700, high: 96500, low: 95500, close: 96400 },
-    { time: '2024-03-25', open: 96400, high: 96800, low: 96200, close: 96300 }, // Down candle
+    { time: '2024-03-25', open: 96400, high: 96800, low: 96200, close: 96300 },
     { time: '2024-03-26', open: 96300, high: 96900, low: 96100, close: 96800 },
-    { time: '2024-03-27', open: 96800, high: 97000, low: 96400, close: 96300 }, // Down candle
+    { time: '2024-03-27', open: 96800, high: 97000, low: 96400, close: 96300 },
     { time: '2024-03-28', open: 96300, high: 96700, low: 96000, close: 96600 },
     { time: '2024-03-29', open: 96600, high: 97200, low: 96500, close: 97100 },
-    { time: '2024-03-30', open: 97100, high: 97400, low: 96800, close: 96700 }, // Down candle
+    { time: '2024-03-30', open: 97100, high: 97400, low: 96800, close: 96700 },
   ]);
 
-  // Get BTC/USDT data from market data
   const btcData = marketData.hot.find(coin => coin.symbol === 'BTCUSDT') || {
     symbol: 'BTCUSDT',
     price: '95,393.5',
@@ -37,7 +35,7 @@ export function Futures() {
   const orderTabs = ['Positions', 'Open Orders', 'Trigger Orders'];
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
+    <div className="page-container">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-800">
         <div className="flex items-center space-x-4">
@@ -122,8 +120,8 @@ export function Futures() {
       </div>
 
       {/* Chart Area */}
-      <div className="flex-1 relative bg-black">
-        <div className="absolute left-0 top-4 flex flex-col space-y-2 p-2">
+      <div className="chart-container relative">
+        <div className="absolute left-0 top-4 flex flex-col space-y-2 p-2 z-10">
           <button className="p-2 text-gray-400 hover:text-white">
             <Plus className="w-5 h-5" />
           </button>

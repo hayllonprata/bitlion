@@ -13,17 +13,16 @@ export function Trade() {
   // Sample data for the chart with both up and down movements
   const [chartData] = useState([
     { time: '2024-03-22', open: 2800, high: 2850, low: 2790, close: 2840 },
-    { time: '2024-03-23', open: 2840, high: 2900, low: 2830, close: 2820 }, // Down candle
+    { time: '2024-03-23', open: 2840, high: 2900, low: 2830, close: 2820 },
     { time: '2024-03-24', open: 2820, high: 2930, low: 2810, close: 2920 },
-    { time: '2024-03-25', open: 2920, high: 2950, low: 2880, close: 2890 }, // Down candle
+    { time: '2024-03-25', open: 2920, high: 2950, low: 2880, close: 2890 },
     { time: '2024-03-26', open: 2890, high: 2940, low: 2860, close: 2930 },
-    { time: '2024-03-27', open: 2930, high: 2960, low: 2890, close: 2880 }, // Down candle
+    { time: '2024-03-27', open: 2930, high: 2960, low: 2890, close: 2880 },
     { time: '2024-03-28', open: 2880, high: 2920, low: 2850, close: 2910 },
     { time: '2024-03-29', open: 2910, high: 2970, low: 2900, close: 2950 },
-    { time: '2024-03-30', open: 2950, high: 2980, low: 2920, close: 2910 }, // Down candle
+    { time: '2024-03-30', open: 2950, high: 2980, low: 2920, close: 2910 },
   ]);
 
-  // Get ETH/USDC data from market data
   const ethData = marketData.hot.find(coin => coin.symbol === 'ETHUSDC') || {
     symbol: 'ETHUSDC',
     price: '2,813.40',
@@ -38,7 +37,7 @@ export function Trade() {
   const chartTabs = ['K Line', 'Order Book', 'Recent Trades', 'Currency'];
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
+    <div className="page-container">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-800">
         <div className="flex items-center space-x-4">
@@ -125,7 +124,7 @@ export function Trade() {
       </div>
 
       {/* Chart Area */}
-      <div className="flex-1 relative bg-black">
+      <div className="chart-container">
         {selectedChartTab === 'K Line' ? (
           <TradingChart data={chartData} />
         ) : (

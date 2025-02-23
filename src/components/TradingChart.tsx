@@ -14,9 +14,21 @@ interface TradingChartProps {
 export function TradingChart({ data }: TradingChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
   useEffect(() => {
     if (!chartContainerRef.current) return;
+
+    const handleResize = () => {
+      if (chartContainerRef.current && chartRef.current) {
+        requestAnimationFrame(() => {
+          chartRef.current.applyOptions({
+            width: chartContainerRef.current!.clientWidth,
+            height: chartContainerRef.current!.clientHeight,
+          });
+        });
+      }
+    };
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
@@ -67,30 +79,35 @@ export function TradingChart({ data }: TradingChartProps) {
     });
 
     candlestickSeries.setData(data);
-
-    // Fit the chart content
     chart.timeScale().fitContent();
-
-    // Store chart instance for cleanup
     chartRef.current = chart;
 
-    // Handle container resizing
-    const resizeObserver = new ResizeObserver(() => {
-      if (chartContainerRef.current) {
-        chart.applyOptions({
-          width: chartContainerRef.current.clientWidth,
-          height: chartContainerRef.current.clientHeight,
-        });
-      }
+    // Throttled resize observer
+    resizeObserverRef.current = new ResizeObserver(() => {
+      window.requestAnimationFrame(handleResize);
     });
 
-    resizeObserver.observe(chartContainerRef.current);
+    resizeObserverRef.current.observe(chartContainerRef.current);
+
+    // Handle window resize as well
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      resizeObserver.disconnect();
-      chart.remove();
+      window.removeEventListener('resize', handleResize);
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect();
+      }
+      if (chartRef.current) {
+        chartRef.current.remove();
+      }
     };
   }, [data]);
 
-  return <div ref={chartContainerRef} className="w-full h-full" />;
+  return (
+    <div 
+      ref={chartContainerRef} 
+      className="w-full h-full"
+      style={{ minHeight: '300px' }} // Ensure minimum height for the chart
+    />
+  );
 }

@@ -14,6 +14,15 @@ body {
   @apply bg-black;
 }
 
-#root {
+/* Ensure content doesn't go under the fixed navigation */
+.page-container {
   @apply pb-20; /* Space for fixed navigation */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container {
+  flex: 1;
+  min-height: 0; /* Important for flex child to respect parent height */
 }
