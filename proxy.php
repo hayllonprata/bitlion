@@ -1,5 +1,5 @@
 <?php
-$url = "https://www.bitcat.com/en_US/";
+$url = "https://www.bitcat.com/";
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
