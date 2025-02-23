@@ -9,7 +9,7 @@ export function Home() {
   const marketData = useBinanceWebSocket();
 
   return (
-    <>
+    <div className="pb-[70px]"> {/* Added padding bottom */}
       {/* Header */}
       <header className="p-3 flex items-center justify-between">
         <img 
@@ -43,6 +43,6 @@ export function Home() {
       <div className="p-4">
         <MarketTabs marketData={marketData} />
       </div>
-    </>
+    </div>
   );
 }
