@@ -26,8 +26,6 @@
   </style>
 </head>
 <body>
-<?php
-echo '<iframe src="https://gerenciamento-bitlion-cat.7uwzf6.easypanel.host/proxy.php" style="width: 100%; height: 100vh; border: none;"></iframe>';
-?>
+<iframe src="https://www.bitcat.com/en_US/" style="width: 100%; height: 100vh; border: none;"></iframe>
 </body>
 </html>
