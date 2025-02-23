@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 const mainBanners = [
-  "./img/top1.webp",
-  "./img/top2.webp",
-  "./img/top3.webp"
+  "./top1.webp",
+  "./top2.webp",
+  "./top3.webp"
 ];
 
 const staticBanners = {
-  left: "./img/left.webp",
-  right: "./img/right.webp"
+  left: "./left.webp",
+  right: "./right.webp"
 };
 
 export function Banners() {
