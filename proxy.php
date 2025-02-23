@@ -12,8 +12,33 @@ curl_close($ch);
 
 // Substituir URLs relativas por absolutas
 $base_url = "https://www.bitcat.com";
-$response = preg_replace('/(href|src|url)="\/([^"]*)"/', '$1="' . $base_url . '/$2"', $response);
-$response = preg_replace('/(href|src|url)="([^"]*)"/', '$1="' . $base_url . '/$2"', $response);
+
+// Função para substituir URLs relativas
+function replaceRelativeUrls($matches) {
+    global $base_url;
+    $url = $matches[2];
+    
+    // Se a URL já começa com http ou https, não faz nada
+    if (strpos($url, 'http') === 0) {
+        return $matches[0];
+    }
+    
+    // Se a URL começa com /, adiciona a base_url
+    if (strpos($url, '/') === 0) {
+        return $matches[1] . '="' . $base_url . $url . '"';
+    }
+    
+    // Se a URL é undefined, retorna o original
+    if ($url === 'undefined') {
+        return $matches[0];
+    }
+    
+    // Para outros casos, adiciona a base_url
+    return $matches[1] . '="' . $base_url . '/' . $url . '"';
+}
+
+// Aplicar a substituição para href, src e url
+$response = preg_replace_callback('/(href|src|url)="([^"]*)"/', 'replaceRelativeUrls', $response);
 
 echo $response;
 ?>
