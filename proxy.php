@@ -13,11 +13,12 @@ curl_close($ch);
 // Definir a URL base
 $base_url = "https://www.bitcat.com";
 
-// Corrigir src e href sem sobrescrever URLs absolutas já corretas
+// Corrigir src, href e url sem sobrescrever URLs absolutas já corretas
 $response = preg_replace_callback(
-    '/(href|src)=["\'](\/?home\/[^"\']+)["\']/i',
+    '/(href|src|url)=["\'](\/?(home|static)\/[^"\']+)["\']/i',
     function ($matches) use ($base_url) {
-        $relative_path = ltrim($matches[2], '/'); // Remove barra inicial se existir
+        // Remove a barra inicial se existir
+        $relative_path = ltrim($matches[2], '/');
         return $matches[1] . '="' . $base_url . '/' . $relative_path . '"';
     },
     $response
