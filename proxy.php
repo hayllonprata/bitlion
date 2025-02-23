@@ -13,9 +13,15 @@ curl_close($ch);
 // Definir a URL base
 $base_url = "https://www.bitcat.com";
 
-// Substituir URLs relativas por absolutas
-$response = preg_replace('/(href|src|url)\(["\']?\/(home\/[^"\')]+)/i', '$1("' . $base_url . '/$2', $response);
-$response = preg_replace('/(href|src|url)\(["\']?(home\/[^"\')]+)/i', '$1("' . $base_url . '/$2', $response);
+// Corrigir src e href sem sobrescrever URLs absolutas já corretas
+$response = preg_replace_callback(
+    '/(href|src)=["\'](\/?home\/[^"\']+)["\']/i',
+    function ($matches) use ($base_url) {
+        $relative_path = ltrim($matches[2], '/'); // Remove barra inicial se existir
+        return $matches[1] . '="' . $base_url . '/' . $relative_path . '"';
+    },
+    $response
+);
 
 echo $response;
 ?>
