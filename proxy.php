@@ -15,30 +15,34 @@ curl_close($ch);
 // URL base
 $base_url = "https://www.bitcat.com";
 
-// Carrega o HTML no DOMDocument para manipulação segura e precisa
-libxml_use_internal_errors(true); // Evita warnings com HTML malformado
+// *** 1ª Fase: Modificação via DOMDocument (Abordagem Estruturada) ***
+libxml_use_internal_errors(true);
 $dom = new DOMDocument();
 $dom->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
-
-// Obtém todas as tags <link>, <script> e <img>
 $tags = $dom->getElementsByTagName('*');
 
 foreach ($tags as $tag) {
     if ($tag->hasAttribute('href')) {
         $href = $tag->getAttribute('href');
-        if (preg_match('/^\/?(home|static)\//i', $href)) { // Se for relativo
+        if (preg_match('/^\/?(home|static)\//i', $href)) { 
             $tag->setAttribute('href', $base_url . '/' . ltrim($href, '/'));
         }
     }
 
     if ($tag->hasAttribute('src')) {
         $src = $tag->getAttribute('src');
-        if (preg_match('/^\/?(home|static)\//i', $src)) { // Se for relativo
+        if (preg_match('/^\/?(home|static)\//i', $src)) { 
             $tag->setAttribute('src', $base_url . '/' . ltrim($src, '/'));
         }
     }
 }
 
-// Salva o HTML atualizado e imprime na tela
-echo $dom->saveHTML();
+$html = $dom->saveHTML();
+
+// *** 2ª Fase: Substituição Manual com Expressões Regulares (Força os Caminhos Relativos) ***
+$html = preg_replace('/(href|src|url)\(["\']?(\/?home\/[^"\')]+)/i', '$1="' . $base_url . '/$2', $html);
+$html = preg_replace('/(href|src|url)\(["\']?(\/?static\/[^"\')]+)/i', '$1="' . $base_url . '/$2', $html);
+
+// Imprime o HTML corrigido
+echo $html;
 ?>
