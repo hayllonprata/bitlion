@@ -26,6 +26,6 @@
   </style>
 </head>
 <body>
-<iframe src="https://www.bitcat.com/en_US/" style="width: 100%; height: 100vh; border: none;"></iframe>
+<iframe src="https://gerenciamento-bitlion-cat.7mzrfe.easypanel.host/proxy.php?url=https://www.bitcat.com/en_US/" style="width: 100%; height: 100vh; border: none;"></iframe>
 </body>
 </html>
