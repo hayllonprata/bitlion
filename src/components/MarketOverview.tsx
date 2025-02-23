@@ -12,7 +12,7 @@ export function MarketOverview({ data }: MarketOverviewProps) {
   const overviewCoins = data.filter(item => topPairs.includes(item.symbol));
 
   return (
-    <div className="flex overflow-x-auto py-3 space-x-6 px-4">
+    <div className="flex overflow-x-auto py-3 space-x-6 px-4 mt-5">
       {overviewCoins.map((item) => (
         <div key={item.symbol} className="flex-none">
           <div className="flex items-baseline space-x-2">
