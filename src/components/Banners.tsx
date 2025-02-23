@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 const mainBanners = [
-  "https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1621504450181-5d356f61d307?auto=format&fit=crop&w=800&q=80"
+  "img/01.png",
+  "img/02.png",
+  "img/03.png"
 ];
 
 const staticBanners = {
-  left: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&w=400&q=80",
-  right: "https://images.unsplash.com/photo-1621504450181-5d356f61d307?auto=format&fit=crop&w=400&q=80"
+  left: "img/left.png",
+  right: "img/right.png"
 };
 
 export function Banners() {
