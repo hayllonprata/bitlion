@@ -16,29 +16,33 @@ $base_url = "https://www.bitcat.com";
 // Função para substituir URLs relativas
 function replaceRelativeUrls($matches) {
     global $base_url;
-    $url = $matches[2];
-    
-    // Se a URL já começa com http ou https, não faz nada
+    $attribute = $matches[1]; // href, src, etc.
+    $url = $matches[2]; // O valor do atributo
+
+    // Se a URL já é absoluta (começa com http ou https), não faz nada
     if (strpos($url, 'http') === 0) {
         return $matches[0];
     }
-    
+
     // Se a URL começa com /, adiciona a base_url
     if (strpos($url, '/') === 0) {
-        return $matches[1] . '="' . $base_url . $url . '"';
+        return $attribute . '="' . $base_url . $url . '"';
     }
-    
+
     // Se a URL é undefined, retorna o original
     if ($url === 'undefined') {
         return $matches[0];
     }
-    
+
     // Para outros casos, adiciona a base_url
-    return $matches[1] . '="' . $base_url . '/' . $url . '"';
+    return $attribute . '="' . $base_url . '/' . $url . '"';
 }
 
 // Aplicar a substituição para href, src e url
 $response = preg_replace_callback('/(href|src|url)="([^"]*)"/', 'replaceRelativeUrls', $response);
+
+// Corrigir URLs que começam com /home
+$response = str_replace('="/home/', '="' . $base_url . '/home/', $response);
 
 echo $response;
 ?>
