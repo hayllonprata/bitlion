@@ -1,9 +1,9 @@
 <?php
-$url = "https://m.bitcat.com/en_US/";
+$url = "https://m.bitcat.com/";
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Seguir redirecionamentos internos
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3');
@@ -30,6 +30,26 @@ foreach ($headers_array as $header) {
         header($header); // Enviar cada cabeçalho individualmente
     }
 }
+
+// Substituir URLs no conteúdo para apontar para o proxy.php
+$proxy_url = "https://gerenciamento-bitlion-cat.7uwzf6.easypanel.host/proxy.php?url="; // Substitua "seusite.com" pelo seu domínio
+$body = preg_replace_callback('/(href|src|action)="([^"]*)"/', function($matches) use ($proxy_url) {
+    $attribute = $matches[1]; // href, src, action
+    $url = $matches[2]; // O valor do atributo
+
+    // Se a URL já é absoluta, redirecionar através do proxy
+    if (strpos($url, 'http') === 0) {
+        return $attribute . '="' . $proxy_url . urlencode($url) . '"';
+    }
+
+    // Se a URL começa com /, redirecionar através do proxy
+    if (strpos($url, '/') === 0) {
+        return $attribute . '="' . $proxy_url . urlencode('https://m.bitcat.com' . $url) . '"';
+    }
+
+    // Para URLs relativas, redirecionar através do proxy
+    return $attribute . '="' . $proxy_url . urlencode('https://m.bitcat.com/' . $url) . '"';
+}, $body);
 
 // Exibir o corpo da resposta
 echo $body;
