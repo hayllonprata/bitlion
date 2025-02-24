@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import { useBinanceWebSocket } from '../hooks/useBinanceWebSocket';
-import { formatPrice } from '../utils/format';
+import { formatPrice, formatSymbol } from '../utils/format';
 
 export function Market() {
   const marketData = useBinanceWebSocket();
@@ -10,21 +10,24 @@ export function Market() {
   const tabs = ['USDT', 'USDC', 'BTC', 'ETH'];
 
   const formatVolume = (volume: number) => {
-    if (volume >= 1e6) return `${(volume / 1e6).toFixed(2)}M`;
-    if (volume >= 1e3) return `${(volume / 1e3).toFixed(2)}K`;
+    if (volume >= 1e9) {
+      return (volume / 1e9).toFixed(2) + 'B';
+    }
+    if (volume >= 1e6) {
+      return (volume / 1e6).toFixed(2) + 'M';
+    }
+    if (volume >= 1e3) {
+      return (volume / 1e3).toFixed(2) + 'K';
+    }
     return volume.toFixed(2);
   };
 
+  // Get all available prices and filter by the selected quote asset
+  const allPrices = [...marketData.hot, ...marketData.topGainers, ...marketData.topLosers, ...marketData.volLeaders];
+  const uniquePrices = Array.from(new Map(allPrices.map(item => [item.symbol, item])).values());
+  
   // Filter coins based on selected tab
-  const filteredCoins = marketData.hot.filter(coin => {
-    return coin.symbol.endsWith(selectedTab);
-  });
-
-  // Format the trading pair correctly
-  const formatTradingPair = (symbol: string, quoteAsset: string) => {
-    // Remove the quote asset from the end and add separator
-    return symbol.slice(0, -quoteAsset.length) + '/' + quoteAsset;
-  };
+  const filteredCoins = uniquePrices.filter(coin => coin.symbol.endsWith(selectedTab));
 
   return (
     <div className="pb-20">
@@ -65,41 +68,40 @@ export function Market() {
         </div>
 
         {/* Market Items */}
-        {filteredCoins.map(coin => {
-          const isPositive = coin.priceChange >= 0;
-          const formattedPair = formatTradingPair(coin.symbol, selectedTab);
-          
-          return (
-            <div key={coin.symbol} className="grid grid-cols-3 px-4 py-4 items-center">
-              <div>
-                <div className="text-sm font-medium text-white">
-                  {formattedPair}
+        {filteredCoins.length > 0 ? (
+          filteredCoins.map(coin => {
+            const isPositive = coin.priceChange >= 0;
+            const formattedSymbolDisplay = formatSymbol(coin.symbol);
+            
+            return (
+              <div key={coin.symbol} className="grid grid-cols-3 px-4 py-4 items-center">
+                <div>
+                  <div className="text-sm font-medium text-white">
+                    {formattedSymbolDisplay}
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    Vol {formatVolume(coin.volume)}
+                  </div>
                 </div>
-                <div className="text-xs text-gray-400">
-                  Vol {formatVolume(coin.volume)}
+                <div className="text-right">
+                  <div className="text-sm text-white">{formatPrice(coin.price)}</div>
+                  <div className="text-xs text-gray-400">
+                    ≈${formatPrice(coin.price)}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className={`inline-block px-3 py-1 rounded text-sm text-white ${
+                    isPositive ? 'bg-[#00B596]' : 'bg-[#D1425E]'
+                  }`}>
+                    {isPositive ? '+' : ''}{coin.priceChange.toFixed(2)}%
+                  </span>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="text-sm text-white">{formatPrice(coin.price)}</div>
-                <div className="text-xs text-gray-400">
-                  ≈${formatPrice(coin.price)}
-                </div>
-              </div>
-              <div className="text-right">
-                <span className={`inline-block px-3 py-1 rounded text-sm text-white ${
-                  isPositive ? 'bg-[#00B596]' : 'bg-[#D1425E]'
-                }`}>
-                  {isPositive ? '+' : ''}{coin.priceChange.toFixed(2)}%
-                </span>
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Show message when no coins are available for the selected tab */}
-        {filteredCoins.length === 0 && (
-          <div className="px-4 py-8 text-center text-gray-400">
-            No trading pairs available for {selectedTab}
+            );
+          })
+        ) : (
+          <div className="px-4 py-4 text-center text-gray-400">
+            Loading trading pairs for {selectedTab}...
           </div>
         )}
       </div>

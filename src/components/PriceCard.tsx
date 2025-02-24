@@ -11,12 +11,19 @@ export function PriceCard({ data, showVolume = false }: PriceCardProps) {
   const isPositive = data.priceChange >= 0;
   const approximateUsdPrice = parseFloat(data.price).toLocaleString();
   
-  // Split the symbol into parts for bold formatting
-  const [firstCurrency, secondCurrency] = data.symbol
-    .replace('USDT', '/USDT')
-    .replace('BTC', '/BTC')
-    .split('/')
-    .filter(Boolean);
+  // Split the symbol into base and quote assets
+  const quoteAssets = ['USDT', 'BTC', 'ETH', 'USDC'];
+  let baseAsset = data.symbol;
+  let quoteAsset = '';
+  
+  // Find the quote asset in the symbol
+  for (const quote of quoteAssets) {
+    if (data.symbol.endsWith(quote)) {
+      baseAsset = data.symbol.slice(0, -quote.length);
+      quoteAsset = quote;
+      break;
+    }
+  }
   
   // Format volume to show K, M, B
   const formatVolume = (volume: number) => {
@@ -37,7 +44,7 @@ export function PriceCard({ data, showVolume = false }: PriceCardProps) {
       {/* Name Column */}
       <div>
         <div className="text-white text-sm">
-          <span className="font-bold">{firstCurrency}</span>/{secondCurrency}
+          <span className="font-bold">{baseAsset}</span>/{quoteAsset}
         </div>
       </div>
 

@@ -25,13 +25,22 @@ const TRADING_PAIRS = [
   'ethbtc', 'bnbbtc', 'adabtc', 'xrpbtc', 'dotbtc',
   'linkbtc', 'unibtc', 'atombtc', 'ltcbtc', 'etcbtc',
   'algobtc', 'vetbtc', 'trxbtc', 'xlmbtc', 'aavebtc',
+  'solbtc', 'maticbtc', 'dogebtc', 'avaxbtc', 'nearbtc',
+  'ftmbtc', 'sandbtc', 'manabtc', 'runebtc', 'icpbtc',
+  'filbtc', 'compbtc', 'sushbtc', 'yfibtc', 'cakebtc',
+  'thetabtc', 'chzbtc', 'enjbtc', 'mkrbtc', 'onebtc',
 
   // ETH pairs
   'bnbeth', 'adaeth', 'linketh', 'unieth', 'atometh',
   'ltceth', 'etceth', 'aaveeth', 'competh', 'yfield',
 
   // USDC pairs
-  'btcusdc', 'ethusdc', 'bnbusdc', 'solusdc', 'adausdc'
+  'btcusdc', 'ethusdc', 'bnbusdc', 'solusdc', 'adausdc',
+  'xrpusdc', 'dogeusdc', 'maticusdc', 'linkusdc', 'uniusdc',
+  'atomusdc', 'ltcusdc', 'etcusdc', 'algousdc', 'vetusdc',
+  'icpusdc', 'filusdc', 'trxusdc', 'xlmusdc', 'aaveusdc',
+  'compusdc', 'sushiusdc', 'yfiusdc', 'avaxusdc', 'nearusdc',
+  'ftmusdc', 'sandusdc', 'manausdc', 'thetausdc', 'runeusdc'
 ];
 
 export function useBinanceWebSocket() {
@@ -75,7 +84,7 @@ export function useBinanceWebSocket() {
         if (data.e === '24hrTicker') {
           const price: CryptoPrice = {
             symbol: data.s,
-            price: parseFloat(data.c).toFixed(4), // Updated to 4 decimal places
+            price: parseFloat(data.c).toFixed(8), // Updated to 8 decimal places for BTC pairs
             priceChange: parseFloat(data.P),
             volume: parseFloat(data.v),
             quoteVolume: parseFloat(data.q),
